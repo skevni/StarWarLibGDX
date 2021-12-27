@@ -1,27 +1,25 @@
-package ru.gb.sklyarov;
+package ru.gb.sklyarov.game;
 
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import ru.gb.sklyarov.game.helpers.Poolable;
+import ru.gb.sklyarov.screen.ScreenManager;
 
-public class Asteroid {
-    private final Texture texture;
+public class Asteroid implements Poolable {
+
     private final Vector2 position;
-    private final float angle;
+    private float angle;
+    private boolean active;
+    private Vector2 velocity;
 
     public Asteroid() {
-        this.texture = new Texture("asteroid.png");
-        this.position = new Vector2(MathUtils.random(0, ScreenManager.SCREEN_WIDTH), MathUtils.random(0, ScreenManager.SCREEN_HEIGHT));
+        this.position = new Vector2(0, 0);
         this.angle = 1.0f;
+        this.velocity = new Vector2(0, 0);
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x - 128, position.y - 128, 128, 128,
-                256, 256, 1, 1,
-                angle, 0, 0, 256, 256, false, false);
-    }
+
 
     public void update(float dt) {
         // появление астероида пока предсказуемо. Сделал так, как вы говорили.
@@ -38,5 +36,28 @@ public class Asteroid {
         position.y += MathUtils.sinDeg(angle * 55) * 50.0f * dt;
 
 
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    public void activate(float x, float y, float vx, float vy) {
+        position.set(x, y);
+        velocity.set(vx, vy);
+        active = true;
+    }
+
+    public void deactivate() {
+        active = false;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }
