@@ -24,9 +24,10 @@ public class WorldRenderer {
         gc.getBackground().render(batch);
         gc.getAsteroidController().render(batch);
         gc.getBulletController().render(batch);
-        gc.getParticleController().render(batch);
         gc.getHero().render(batch);
-        gc.getHero().renderGUI(batch, font32);
+        sb.setLength(0);
+        sb.append("SCORE: ").append(gc.getHero().getScoreView());
+        font32.draw(batch, sb, 20, 700);
         batch.end();
     }
 }
