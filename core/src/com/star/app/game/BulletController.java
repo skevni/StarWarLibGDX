@@ -7,15 +7,13 @@ import com.star.app.screen.utils.Assets;
 
 public class BulletController extends ObjectPool<Bullet> {
     private TextureRegion bulletTexture;
-    private GameController gc;
 
     @Override
     protected Bullet newObject() {
-        return new Bullet(gc);
+        return new Bullet();
     }
 
-    public BulletController(GameController gc) {
-        this.gc= gc;
+    public BulletController() {
         this.bulletTexture = Assets.getInstance().getAtlas().findRegion("bullet");
     }
 
