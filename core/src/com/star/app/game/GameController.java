@@ -3,6 +3,9 @@ package com.star.app.game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.star.app.screen.ScreenManager;
+import com.star.app.screen.utils.InputKeys;
+import com.star.app.screen.utils.ProcessingResult;
+import com.star.app.screen.utils.Result;
 
 public class GameController {
     private Background background;
@@ -55,6 +58,9 @@ public class GameController {
     }
 
     public void update(float dt) {
+        if (InputKeys.justPressedCtrlF10()){
+            ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.MENU);
+        }
         background.update(dt);
         hero.update(dt);
         asteroidController.update(dt);
@@ -82,6 +88,11 @@ public class GameController {
                     hero.addScore(a.getHpMax() * 50);
                 }
                 hero.takeDamage(2);
+
+                if (hero.getHp() <= 0) {
+                    ProcessingResult.serialize(new Result(hero.getScore(), hero.getMoney()));
+                    ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAMEOVER);
+                }
             }
         }
 
