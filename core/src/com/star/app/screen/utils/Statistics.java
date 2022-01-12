@@ -4,6 +4,8 @@ public class Statistics {
     private static int score;
     private static int money;
 
+    private Statistics(){}
+
     public static int getScore() {
         return score;
     }
