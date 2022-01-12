@@ -8,8 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.star.app.screen.utils.Assets;
-import com.star.app.screen.utils.ProcessingResult;
-import com.star.app.screen.utils.Result;
+import com.star.app.screen.utils.Statistics;
 
 public class GameOverScreen extends AbstractScreen {
     private BitmapFont font72;
@@ -30,9 +29,9 @@ public class GameOverScreen extends AbstractScreen {
         this.font24 = Assets.getInstance().getAssetManager().get("fonts/font24.ttf");
 
         Gdx.input.setInputProcessor(stage);
-        Result result = ProcessingResult.deserialize();
-        this.score = result.getScore();
-        this.money = result.getMoney();
+//        Result result = ProcessingResult.deserialize();
+        this.score = Statistics.getScore();
+        this.money = Statistics.getMoney();
     }
 
     @Override
