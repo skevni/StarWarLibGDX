@@ -82,6 +82,6 @@ public class MenuScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
