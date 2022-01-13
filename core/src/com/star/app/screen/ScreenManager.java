@@ -9,7 +9,7 @@ import com.star.app.screen.utils.Assets;
 
 public class ScreenManager {
     public enum ScreenType{
-        GAME, MENU
+        GAME, MENU, GAMEOVER
     }
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
@@ -21,11 +21,16 @@ public class ScreenManager {
     private MenuScreen menuScreen;
     private Screen targetScreen;
     private Viewport viewport;
+    private GameOverScreen gameOverScreen;
 
     private static ScreenManager ourInstance = new ScreenManager();
 
     public static ScreenManager getInstance() {
         return ourInstance;
+    }
+
+    public GameOverScreen getGameOverScreen() {
+        return gameOverScreen;
     }
 
     public Viewport getViewport() {
@@ -42,6 +47,7 @@ public class ScreenManager {
         this.gameScreen = new GameScreen(batch);
         this.menuScreen = new MenuScreen(batch);
         this.loadingScreen = new LoadingScreen(batch);
+        this.gameOverScreen = new GameOverScreen(batch);
     }
 
     public void resize(int width, int height) {
@@ -65,6 +71,10 @@ public class ScreenManager {
             case MENU:
                 targetScreen = menuScreen;
                 Assets.getInstance().loadAssets(ScreenType.MENU);
+                break;
+            case GAMEOVER:
+                targetScreen = gameOverScreen;
+                Assets.getInstance().loadAssets(ScreenType.GAMEOVER);
                 break;
         }
     }

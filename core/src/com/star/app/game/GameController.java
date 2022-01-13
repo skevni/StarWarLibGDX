@@ -3,6 +3,8 @@ package com.star.app.game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.star.app.screen.ScreenManager;
+import com.star.app.screen.utils.InputKeys;
+import com.star.app.screen.utils.Statistics;
 
 public class GameController {
     private Background background;
@@ -55,6 +57,9 @@ public class GameController {
     }
 
     public void update(float dt) {
+        if (InputKeys.justPressedCtrlF10()) {
+            ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.MENU);
+        }
         background.update(dt);
         hero.update(dt);
         asteroidController.update(dt);
@@ -82,6 +87,13 @@ public class GameController {
                     hero.addScore(a.getHpMax() * 50);
                 }
                 hero.takeDamage(2);
+
+                if (hero.getHp() <= 0) {
+//                    ProcessingResult.serialize(new Result(hero.getScore(), hero.getMoney()));
+                    Statistics.setMoney(hero.getMoney());
+                    Statistics.setScore(hero.getScore());
+                    ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAMEOVER);
+                }
             }
         }
 
@@ -114,9 +126,9 @@ public class GameController {
 
         for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
             PowerUp p = powerUpsController.getActiveList().get(i);
-            if(hero.getHitArea().contains(p.getPosition())){
+            if (hero.getHitArea().contains(p.getPosition())) {
                 hero.consume(p);
-                particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x,p.getPosition().y );
+                particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x, p.getPosition().y);
                 p.deactivate();
             }
         }
