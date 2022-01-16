@@ -98,6 +98,24 @@ public class Shop extends Group {
         btnWeapon.setPosition(20, 100);
         this.addActor(btnWeapon);
 
+        btnHpMax.setPosition(20, 300);
+        this.addActor(btnHpMax);
+
+        final TextButton btnBullets = new TextButton("Bullets", textButtonStyle);
+        btnBullets.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (hero.isMoneyEnough(Hero.Skill.BULLETS.cost)) {
+                    if (hero.upgrade(Hero.Skill.BULLETS)) {
+                        hero.decreaseMoney(Hero.Skill.BULLETS.cost);
+                    }
+                }
+            }
+        });
+
+        btnBullets.setPosition(120, 300);
+        this.addActor(btnBullets);
+
 
         this.setPosition(20, 20);
         this.setVisible(false);

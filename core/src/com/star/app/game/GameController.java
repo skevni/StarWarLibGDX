@@ -17,6 +17,7 @@ public class GameController {
     private Vector2 tempVec;
     private Stage stage;
     private boolean pause;
+    private float asteroidScale;
 
     public void setPause(boolean pause) {
         this.pause = pause;
@@ -62,12 +63,7 @@ public class GameController {
         stage.addActor(hero.getShop());
         Gdx.input.setInputProcessor(stage);
 
-        for (int i = 0; i < 3; i++) {
-            asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
-                    MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
-                    MathUtils.random(-200, 200),
-                    MathUtils.random(-200, 200), 1.0f);
-        }
+        createAsteroid();
     }
 
     public void update(float dt) {
@@ -83,6 +79,9 @@ public class GameController {
         checkCollisions();
         if (!hero.isAlive()) {
             ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAMEOVER, hero);
+        }
+        if (asteroidController.getActiveList().size() == 0) {
+            createAsteroid();
         }
         stage.act(dt);
     }
@@ -104,7 +103,7 @@ public class GameController {
                 if (a.takeDamage(2)) {
                     hero.addScore(a.getHpMax() * 50);
                 }
-                hero.takeDamage(2);
+                hero.takeDamage(2 );
             }
         }
 
@@ -136,7 +135,7 @@ public class GameController {
 
         for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
             PowerUp p = powerUpsController.getActiveList().get(i);
-            if (hero.getHitArea().overlaps(p.getHitArea())){
+            if (hero.getHitArea().overlaps(p.getHitArea())) {
                 tempVec.set(hero.getPosition()).sub(p.getPosition()).nor();
                 p.getPosition().mulAdd(tempVec, p.getAttractionSpeed());
             }
@@ -146,6 +145,16 @@ public class GameController {
                 p.deactivate();
             }
         }
+    }
+
+    private void createAsteroid() {
+        for (int i = 0; i < 3; i++) {
+            asteroidController.setup(MathUtils.random(0, ScreenManager.SCREEN_WIDTH),
+                    MathUtils.random(0, ScreenManager.SCREEN_HEIGHT),
+                    MathUtils.random(-200, 200),
+                    MathUtils.random(-200, 200), 1.0f + asteroidScale);
+        }
+        asteroidScale += 0.01f;
     }
 
     public void dispose() {
