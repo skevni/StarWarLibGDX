@@ -14,7 +14,8 @@ import com.star.app.screen.utils.Assets;
 
 public class Hero {
     public enum Skill {
-        HP_MAX(20, 10), HP(20, 10), WEAPON(100, 1);
+        HP_MAX(20, 10), HP(20, 10), WEAPON(100, 1),
+        BULLETS(20, 1);
 
         int cost;
         int power;
@@ -150,6 +151,12 @@ public class Hero {
                     currentWeapon = weapons[weaponNum];
                     return true;
                 }
+            case BULLETS:
+                if (currentWeapon.getCurBullets() == currentWeapon.getMaxBullets()) {
+                    return false;
+                }
+                currentWeapon.setCurBullets(currentWeapon.getMaxBullets());
+                return true;
         }
         return false;
 
@@ -159,6 +166,9 @@ public class Hero {
         switch (p.getType()) {
             case MEDKIT:
                 hp += p.getPower();
+                if (hp > hpMax) {
+                    hp = hpMax;
+                }
                 break;
             case MONEY:
                 money += p.getPower();
