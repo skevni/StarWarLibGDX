@@ -108,7 +108,6 @@ public class GameController {
             }
         }
 
-
         for (int i = 0; i < bulletController.getActiveList().size(); i++) {
             Bullet b = bulletController.getActiveList().get(i);
             for (int j = 0; j < asteroidController.getActiveList().size(); j++) {
@@ -137,13 +136,16 @@ public class GameController {
 
         for (int i = 0; i < powerUpsController.getActiveList().size(); i++) {
             PowerUp p = powerUpsController.getActiveList().get(i);
+            if (hero.getHitArea().overlaps(p.getHitArea())){
+                tempVec.set(hero.getPosition()).sub(p.getPosition()).nor();
+                p.getPosition().mulAdd(tempVec, p.getAttractionSpeed());
+            }
             if (hero.getHitArea().contains(p.getPosition())) {
                 hero.consume(p);
                 particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x, p.getPosition().y, p.getType());
                 p.deactivate();
             }
         }
-
     }
 
     public void dispose() {
