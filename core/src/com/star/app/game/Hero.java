@@ -105,6 +105,7 @@ public class Hero extends Ship{
                     currentWeapon = weapons[weaponNum];
                     return true;
                 }
+                break;
             case MAGNET:
                 if (magneticField.radius < 500) {
                     magneticField.radius += Skill.MAGNET.power;
@@ -145,7 +146,7 @@ public class Hero extends Ship{
         super.update(dt);
         updateScore(dt);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             tryToFire();
         }
 
