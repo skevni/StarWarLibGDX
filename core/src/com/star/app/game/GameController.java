@@ -16,6 +16,7 @@ public class GameController {
     private BulletController bulletController;
     private ParticleController particleController;
     private PowerUpsController powerUpsController;
+    private BotController botController;
     private InfoController infoController;
     private Hero hero;
     private Vector2 tempVec;
@@ -25,6 +26,7 @@ public class GameController {
     private float timer;
     private Music music;
     private StringBuilder sb;
+    private Bot bot;
 
     public float getTimer() {
         return timer;
@@ -58,8 +60,16 @@ public class GameController {
         return asteroidController;
     }
 
+    public BotController getBotController() {
+        return botController;
+    }
+
     public Hero getHero() {
         return hero;
+    }
+
+    public Bot getBot() {
+        return bot;
     }
 
     public Background getBackground() {
@@ -73,16 +83,20 @@ public class GameController {
     public GameController(SpriteBatch batch) {
         this.background = new Background(this);
         this.hero = new Hero(this);
+        this.bot = new Bot(this);
         this.asteroidController = new AsteroidController(this);
         this.bulletController = new BulletController(this);
         this.particleController = new ParticleController();
         this.powerUpsController = new PowerUpsController(this);
+        this.botController = new BotController(this);
         this.infoController = new InfoController();
         this.tempVec = new Vector2();
         this.level = 1;
         this.sb = new StringBuilder();
         this.music = Assets.getInstance().getAssetManager().get("audio/mortal.mp3");
         this.music.setLooping(true);
+        // TODO: должно быть где-то в настройках
+        this.music.setVolume(0.2f);
         this.music.play();
         this.stage = new Stage(ScreenManager.getInstance().getViewport(), batch);
         stage.addActor(hero.getShop());
@@ -107,10 +121,12 @@ public class GameController {
         timer += dt;
         background.update(dt);
         hero.update(dt);
+        bot.update(dt);
         asteroidController.update(dt);
         bulletController.update(dt);
         particleController.update(dt);
         powerUpsController.update(dt);
+        botController.update(dt);
         infoController.update(dt);
         checkCollisions();
         if (!hero.isAlive()) {
@@ -168,10 +184,21 @@ public class GameController {
                         for (int k = 0; k < 3; k++) {
                             powerUpsController.setup(a.getPosition().x, a.getPosition().y,
                                     a.getScale() * 0.25f);
+                            botController.setup(a.getPosition().x, a.getPosition().y, a.getScale() * 0.08f);
                         }
                     }
                     break;
                 }
+            }
+            for (int j = 0; j < botController.getActiveList().size(); j++) {
+                Bot bot = botController.getActiveList().get(j);
+                if (bot.getHitArea().contains(b.getPosition())){
+                    // TODO: попадаение. Как-то нужно разделить пули на пули героя и бота
+
+//                    b.deactivate();
+//                    bot.takeDamage(hero.getCurrentWeapon().getDamage());
+                }
+
             }
         }
 
@@ -186,6 +213,16 @@ public class GameController {
                 hero.consume(p);
                 particleController.getEffectBuilder().takePowerUpEffect(p.getPosition().x, p.getPosition().y, p.getType());
                 p.deactivate();
+            }
+        }
+
+        for (int i = 0; i < botController.getActiveList().size(); i++) {
+            Bot bot = botController.getActiveList().get(i);
+            if (bot.getLasso().contains(hero.getHitArea())) {
+                //TODO: start fire on the hero
+                // что-то поворот в сторону героя пока не понял как сделать
+//                tempVec.set(hero.getPosition()).sub(bot.getPosition()).nor();
+                bot.tryToFire();
             }
         }
 
