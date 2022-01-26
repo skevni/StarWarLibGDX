@@ -95,9 +95,6 @@ public class GameController {
         Gdx.input.setInputProcessor(stage);
 
         generateBigAsteroids(1);
-
-        botController.setup(100, 100);
-        botController.setup(1000, 100);
     }
 
     public void generateBigAsteroids(int n) {
@@ -128,7 +125,7 @@ public class GameController {
         }
         if (asteroidController.getActiveList().size() == 0) {
             level++;
-            generateBigAsteroids(level <= 3 ? level : 3);
+            generateBigAsteroids(Math.min(level, 3));
             timer = 0.0f;
         }
         stage.act(dt);
@@ -195,6 +192,8 @@ public class GameController {
                                 powerUpsController.setup(a.getPosition().x, a.getPosition().y,
                                         a.getScale() * 0.25f);
                             }
+                            botController.setup(a.getPosition().x, a.getPosition().y,
+                                    a.getScale() * 0.08f);
                         }
                     }
                     break;

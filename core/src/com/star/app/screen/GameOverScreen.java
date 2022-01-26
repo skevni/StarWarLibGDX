@@ -1,14 +1,9 @@
 package com.star.app.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.star.app.game.Background;
@@ -39,6 +34,28 @@ public class GameOverScreen extends AbstractScreen {
         this.font72 = Assets.getInstance().getAssetManager().get("fonts/font72.ttf");
         this.font48 = Assets.getInstance().getAssetManager().get("fonts/font48.ttf");
         this.font24 = Assets.getInstance().getAssetManager().get("fonts/font24.ttf");
+
+        playMusic();
+    }
+
+    private void playMusic() {
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/gameover1.mp3"));
+
+        final Music musicVoice = Gdx.audio.newMusic(Gdx.files.internal("audio/gameover2.mp3"));
+        music.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                musicVoice.play();
+                music.dispose();
+            }
+        });
+        musicVoice.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                musicVoice.dispose();
+            }
+        });
+        music.play();
     }
 
     public void update(float dt) {

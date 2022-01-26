@@ -72,7 +72,7 @@ public class Hero extends Ship{
         this.velocity = new Vector2(0, 0);
         this.texture = Assets.getInstance().getAtlas().findRegion("ship");
         this.hitArea = new Circle(position, 29);
-        this.money = 1500;
+        this.money = 150;
         this.sb = new StringBuilder();
         this.shop = new Shop(this);
         this.magneticField = new Circle(position, 100);
