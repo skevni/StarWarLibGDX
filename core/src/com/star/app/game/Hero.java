@@ -76,6 +76,7 @@ public class Hero extends Ship{
         this.sb = new StringBuilder();
         this.shop = new Shop(this);
         this.magneticField = new Circle(position, 100);
+        this.ownerType = OwnerType.PLAYER;
     }
 
     public void renderGUI(SpriteBatch batch, BitmapFont font) {
@@ -105,7 +106,6 @@ public class Hero extends Ship{
                     currentWeapon = weapons[weaponNum];
                     return true;
                 }
-                break;
             case MAGNET:
                 if (magneticField.radius < 500) {
                     magneticField.radius += Skill.MAGNET.power;
@@ -146,7 +146,7 @@ public class Hero extends Ship{
         super.update(dt);
         updateScore(dt);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             tryToFire();
         }
 
@@ -157,8 +157,7 @@ public class Hero extends Ship{
             angle -= 180.0f * dt;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            velocity.x += MathUtils.cosDeg(angle) * enginePower * dt;
-            velocity.y += MathUtils.sinDeg(angle) * enginePower * dt;
+            accelerate(dt);
 
             float bx = position.x + MathUtils.cosDeg(angle + 180) * 20;
             float by = position.y + MathUtils.sinDeg(angle + 180) * 20;
@@ -172,8 +171,7 @@ public class Hero extends Ship{
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            velocity.x += MathUtils.cosDeg(angle) * -enginePower / 2 * dt;
-            velocity.y += MathUtils.sinDeg(angle) * -enginePower / 2 * dt;
+            brake(dt);
 
             float bx = position.x + MathUtils.cosDeg(angle + 90) * 20;
             float by = position.y + MathUtils.sinDeg(angle + 90) * 20;
