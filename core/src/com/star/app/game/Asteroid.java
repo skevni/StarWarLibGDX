@@ -95,17 +95,17 @@ public class Asteroid implements Poolable {
     public void update(float dt) {
         position.mulAdd(velocity, dt);
         angle += rotationSpeed * dt;
-        if (position.x < -BASE_RADIUS) {
-            position.x = ScreenManager.SCREEN_WIDTH + BASE_RADIUS;
+        if (position.x < -hitArea.radius) {
+            position.x = ScreenManager.SCREEN_WIDTH + hitArea.radius;
         }
-        if (position.y < -BASE_RADIUS) {
-            position.y = ScreenManager.SCREEN_HEIGHT + BASE_RADIUS;
+        if (position.y < -hitArea.radius) {
+            position.y = ScreenManager.SCREEN_HEIGHT + hitArea.radius;
         }
-        if (position.x > ScreenManager.SCREEN_WIDTH + BASE_RADIUS) {
-            position.x = -BASE_RADIUS;
+        if (position.x > ScreenManager.SCREEN_WIDTH + hitArea.radius) {
+            position.x = -hitArea.radius;
         }
-        if (position.y > ScreenManager.SCREEN_HEIGHT + BASE_RADIUS) {
-            position.y = -BASE_RADIUS;
+        if (position.y > ScreenManager.SCREEN_HEIGHT + hitArea.radius) {
+            position.y = -hitArea.radius;
         }
         hitArea.setPosition(position);
     }

@@ -1,9 +1,8 @@
 package com.star.app.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.star.app.game.helpers.ObjectPool;
-import com.star.app.screen.utils.Assets;
 
 public class BotController extends ObjectPool<Bot> {
     private GameController gc;
@@ -24,8 +23,10 @@ public class BotController extends ObjectPool<Bot> {
         }
     }
 
-    public void setup(float x, float y) {
-        getActiveElement().activate(x, y);
+    public void setup(float x, float y, float probability) {
+        if (MathUtils.random() <= probability) {
+            getActiveElement().activate(x, y);
+        }
     }
 
     public void update(float dt) {
